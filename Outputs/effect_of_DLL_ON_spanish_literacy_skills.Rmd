@@ -1,0 +1,69 @@
+---
+title: "Descubriendo la Lectura Improves Spanish Literacy Skills of Spanish-speaking First-grade Students who Have the Lowest Literacy Test Scores in Texas, Illinois and Arizona"
+author: "Jia Jia Ji" 
+thanks: "Code and data are available at: https://github.com/jiaj6/effect_of_DLL_on_spanish_literacy_skills."
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: "Since many Spanish-speaking elementary schoolers educated in U.S. have weakness in developing Spanish literacy skills, Descubriendo la Lectura (DLL) is one of the approaches aiming to solve this problem. To explore the effect of DLL program on Spanish literacy skills of these students, this paper analyzed the dataset from a randomized controlled trial where first-grade Spanish-speaking students who had the lowest literacy test scores were randomly assigned to a control group that received standard education and a treatment group that was trained by DLL program. By comparing the post-test scores of Logramos literacy test between these 2 groups and interpreting the coefficients of linear regression model, we found that the students received DLL training had higher scores than the others, so this program could improve the Spanish literacy skills of the Spanish-speaking students who were poor in literacy skills. The government can use these findings to implement more effective programs to support the academic development of these students." 
+output: 
+   bookdown::pdf_document2:
+toc: FALSE 
+bibliography: references.bib 
+---
+ 
+```{r set up workspace, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE}
+### Preamble ###
+# Purpose: explore the effect of Descubriendo la Lectura (DLL) program on Spanish literacy skills of the Spanish-speaking first-grade students who perform poor in literacy skills in Texas, Illinois and Arizona
+# Author: Jia Jia Ji
+# Email: jiajia.ji@mail.utoronto.ca
+# Date: April 8, 2021
+# To do: read the data, compare the post-test scores of students in the control group and treatment group by graph visualization and fitting a linear regression model
+```
+
+
+```{r install packages and citation, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE}
+### install and load the packages ###
+#install.packages('tidyverse')
+#install.packages('ggplot2')
+library(tidyverse) 
+library(ggplot2)
+
+### R and R packages citations ###
+citation()
+citation('tidyverse')
+citation('ggplot2')
+```
+
+
+# Introduction:
+
+Countries in the North America, such as Canada and U.S., are acknowledged to be diversified, because they accept immigrants from foreign countries and they bring various languages, culture and technologies together to create an open and diversified community. However, in the meantime, these people have to adapt to the new environment, especially regarding learning English, to receive the high-quality education or seek for employment opportunities. Among these English language learners, children have been thrown into focus, because the differences between English-taught knowledge and Spanish culture may make them have difficulty in developing Spanish literacy skills, meanwhile building a solid foundation in literacy skills for elementary schoolers is of importance. Since Spanish has been the second frequently used language around the world and there are many people from Spanish-speaking countries moving to U.S. and Canada each year, many Spanish-speaking children encounter this problem. U.S. schools have tried different approaches to help to improve the Spanish literacy performance of these students, and Descubriendo la Lectura (DLL), which is a one-to-one tutoring program implemented in Spanish [@citeliterature2], is among them. Therefore, exploring whether DLL program affects the Spanish literacy skills of these Spanish-speaking students is crucial, and the findings can guide educators to use a more effective way to advance the Spanish literacy skills and potentially improve the academic performance of these students.
+
+This paper aimed to investigate the effect of DLL program on Spanish literacy skills of the Spanish-speaking entry-level elementary schoolers who have poor performance in literacy skills in U.S.. The sample was 152 Spanish-speaking first-grade students whose idO (i.e. a standard way of testing the literacy skills) test score is within the lowest 25% of their schools in Texas, Illinois and Arizona [@citeliterature2]. The scores of Logramos, a Spanish literacy test, were used as the response variables to measure the students’ literacy skills. The dataset [@citeliterature1] was from OPENICPSR and it contained 152 records of Spanish-speaking students’ pre-test and post-test scores in Reading, Language, Vocabulary and Total. Besides, a randomized controlled trial was conducted to conclude the causal relationship between DLL and Spanish literacy skills, where nearly half students were randomly assigned to the control group that received the standard education and the remaining students were in the treatment group that enrolled in DLL program. The intervention was the DLL program targeting at helping Spanish-speaking students with their literacy skills. Therefore, the main research question was to estimate the differences of post-test scores between the control group and treatment group. By addressing this question, we can know whether the Spanish-speaking students can take advantage of DLL to improve their literacy skills and whether the government can implement this program to the larger population to weaken the problem of poor literacy performance. 
+
+The remaining paper was organized into 3 sections. In Data section, we discussed how the data was collected, along with the selection bias, ethical issues and non-responses of the experiment. We also gave an overview of what the data looked like, and draw some graphs to visualize the distributions and differences of outcomes in the control group and treatment group. Afterwards, in Model section, we fitted a linear regression model for the test score of each component (i.e. Reading, Language, Vocabulary and Total) in Logramos, and we interpreted the coefficient of group assignment to conclude whether the effect of DLL on literacy skills existed or not. Then, in Discussion section, we reviewed some previous works, summarized this paper and listed 3 key findings. Finally, we discussed the main limitations and suggestions of this paper regarding the external validity, ethics and the criteria for measuring literacy skills. 
+
+
+# Data:
+
+**2.1 Data Collection Methodology**
+
+**2.2 Graphs & Tables**
+
+
+# Model:
+
+
+# Discussion:
+
+**4.1 Paper Overview & Literacy Review**
+
+**4.2 Key Findings**
+
+**4.3 Limitations**
+
+**4.4 Future Direction**
+
+
+\newpage
+
+# References
