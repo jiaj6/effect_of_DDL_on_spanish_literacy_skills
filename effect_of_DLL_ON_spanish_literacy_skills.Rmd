@@ -164,8 +164,8 @@ pre_language_plot1 <- clean_data_language %>%
   ggplot(mapping = aes(x = Pretest_LANGUAGE, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
   labs(x = 'Pretest score of Language', y = 'Count', 
-       title = 'Histogram of pretest scores in Language for the students in 
-       control group and treatment group') +
+       title = 'Histogram of pretest scores in Language for the students 
+in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -295,7 +295,7 @@ In the data, although the treatment group had slightly higher pretest Reading sc
 
 The variables Posttest_Reading, Posttest_Language, Posttest_Vocabulary and Posttest_ELA.Total were continuous. Similar to the pretest scores, for each subtest and the overall score, I made a histogram and a boxplot, and calculated the average for each group to compare the posttest scores between groups and see whether the treatment was effective (i.e. the students in treatment group tended to achieve higher posttest scores generally).   
 
-Figure \@ref(fig:plot3) and Figure \@ref(fig:plot4) illustrated that for each subtest’s posttest score (i.e. Reading, Language and Vocabulary) and the overall score, more students in the treatment group achieved median-to-high score (i.e. scores higher than 175) than those in the control group. Meanwhile, for each posttest score, the treatment group had higher spread than that for the control group regarding the quantiles (i.e. Q1, median and Q3). Also, Table \@ref(tab:table2) showed that the average posttest overall score for the students in treatment group was 176.39, which was 4.44 higher than that for the students in control group (171.95 for control group). Similarly, the students in treatment group had higher posttest scores on average for all 3 subtests (i.e. Language: 177.62 and 180.42 for control group and treatment group respectively, Vocabulary: 164.38 and 169.10 for control group and treatment group respectively). Particularly, the average posttest Reading score for treatment group was 172.61, which was 5.63 higher than that for control group (166.98 for control group), probably because DLL is a Spanish-version Reading Recovery Program [@citepaper]. Therefore, the students receiving the DLL training tended to achieve stronger Spanish literacy skills than those receiving the regular teaching, and DLL program was possible to be effective.
+Figure \@ref(fig:plot3) and Figure \@ref(fig:plot4) illustrated that for each subtest’s posttest score (i.e. Reading, Language and Vocabulary) and the overall score, more students in the treatment group achieved median-to-high score (i.e. scores higher than 175) than those in the control group. Meanwhile, for each posttest score, the treatment group had higher spread than that for the control group regarding the quantiles (i.e. Q1, median and Q3). Also, Table \@ref(tab:table2) showed that the average posttest overall score for the students in treatment group was 176.39, which was 4.44 higher than that for the students in control group (171.95 for control group). Similarly, the students in treatment group had higher posttest scores on average for all 3 subtests (i.e. Language: 177.62 and 180.42 for control group and treatment group respectively, Vocabulary: 164.38 and 169.10 for control group and treatment group respectively). Particularly, the average posttest Reading score for treatment group was 173.08, which was 6.1 higher than that for control group (166.98 for control group), probably because DLL is a Spanish-version Reading Recovery Program [@citepaper]. Therefore, the students receiving the DLL training tended to achieve stronger Spanish literacy skills than those receiving the regular teaching, and DLL program was possible to be effective.
 
 ```{r plot3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The histograms and boxplots of the posttest scores in Reading and Language for the students in control group and treatment group', fig.width = 10, fig.height = 6}
 # 1. posttest score for Reading (Posttest_READING):
@@ -509,7 +509,7 @@ I fitted the linear mixed model for each subtest and the overall score.  For eac
 
 **5.1 Result of the model for posttest score in Reading:**
 
-Table \@ref(tab:table3) showed that the MLE (i.e. estimated coefficient) for the intercept was 116.50, which represented that a student in control group with pretest Reading score of 0 was predicted to have a posttest score in Reading of 116.50. Besides, the MLE for the allocation of treatment (i.e. T_assignment) was 5.36, which showed that the posttest score of a student in treatment group was 5.36 higher than that of a student in control group with the same pretest Reading score. Also, the p-value of T_assignment was 0.0015, which was much smaller than 0.05, so I rejected the null hypothesis and considered the variable T_assignment as significantly affecting the posttest Reading score.
+Table \@ref(tab:table3) showed that the MLE (i.e. estimated coefficient) for the intercept was 116.50, which represented that a student in treatment group with pretest Reading score of 0 was predicted to have a posttest score in Reading of 116.50. Besides, the MLE for the allocation of treatment (i.e. T_assignment) was 5.36, which showed that the posttest score of a student in treatment group was 5.36 higher than that of a student in control group with the same pretest Reading score. Also, the p-value of T_assignment was 0.0015, which was much smaller than 0.05, so I rejected the null hypothesis and considered the variable T_assignment as significantly affecting the posttest Reading score.
 
 ```{r table3, echo = FALSE, message = FALSE, warning = FALSE}
 # 1. linear mixed model for scores in Reading
@@ -526,15 +526,16 @@ knitr::kable(summary(emmeans(reading_model, ~ T_assignment)), caption = 'The est
 
 **5.2 Result of the model for posttest score in Language:**
 
-Table \@ref(tab:table5) showed that the MLE for the intercept was 107.26, which was the predicted posttest score in Language of the student in control group with pretest Language score of 0. Then, the MLE for T_assignment was 4.98, which showed that the posttest Language score of the student in treatment group was 4.98 higher than that of the student in control group with the same pretest score. Also, the p-value of T_assignment was 0.0082 and it was much smaller than 0.05, so I rejected the null hypothesis, which indicated that T_assignment statistically significantly affected the posttest score in Language.
+Table \@ref(tab:table5) showed that the MLE for the intercept was 156.57, which was the predicted posttest score in Language of the student in treatment group with pretest Language score of 0. Then, the MLE for T_assignment was 3.42, which showed that the posttest Language score of the student in treatment group was 3.42 higher than that of the student in control group with the same pretest score. Also, the p-value of T_assignment was 0.065 and it was slightly larger than 0.05, so I failed to reject the null hypothesis, which indicated that T_assignment did not statistically significantly affected the posttest score in Language.
+
 ```{r table5, echo = FALSE, message = FALSE, warning = FALSE}
 # 2. linear mixed model for scores in Language
 language_model <- lme(Posttest_LANGUAGE ~ T_assignment + Pretest_LANGUAGE, random = ~1|SCHOOLID, method = 'REML', data = clean_data_language)
 # summary statistics
-knitr::kable(Pmisc::lmeTable(language_model), caption ='The summary statistics for the fitted Language model')
+knitr::kable(Pmisc::lmeTable(language_model), caption ='The summary statistics for the fitted Language model', digits = 4)
 ```
 
-Besides, Table \@ref(tab:table6) showed that the estimated marginal mean for control group and treatment group was 177 and 181 respectively, which showed that the students in treatment group tended to have higher average posttest Language score. Also, the 95% confidence interval for control group and treatment group was [174, 181] and [178, 184] respectively, so the students in treatment group were more likely to achieve a higher average Language score than those in control group.
+Besides, Table \@ref(tab:table6) showed that the estimated marginal mean for control group and treatment group was 177.48 and 180.90 respectively, which showed that the students in treatment group tended to have higher average posttest Language score. Also, the 95% confidence interval for control group and treatment group was [174, 181] and [178, 184] respectively, so the students in treatment group were more likely to achieve a higher average Language score than those in control group.
 
 ```{r table6, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
@@ -544,7 +545,7 @@ knitr::kable(summary(emmeans(language_model, ~ T_assignment)), caption = 'The es
 
 **5.3 Result of the model for post-test score in Vocabulary:**
 
-Table \@ref(tab:table7) showed that the MLE for the intercept was 107.26, which represented that the student in control group with pretest Vocabulary score of 0 was predicted to have a posttest score in Vocabulary of 107.26. Besides, the MLE for T_assignment was 4.98, which showed that the posttest score of a student in treatment group was 4.98 higher than that of a student in control group with the same pre-test score. Also, the p-value of T_assignment was much smaller than 0.05 (i.e. p-value was 0.0008), so I rejected the null hypothesis and concluded that T_assignment significantly affected the post-test Vocabulary score.
+Table \@ref(tab:table7) showed that the MLE for the intercept was 107.26, which represented that the student in treatment group with pretest Vocabulary score of 0 was predicted to have a posttest score in Vocabulary of 107.26. Besides, the MLE for T_assignment was 4.98, which showed that the posttest score of a student in treatment group was 4.98 higher than that of a student in control group with the same pre-test score. Also, the p-value of T_assignment was much smaller than 0.05 (i.e. p-value was 0.008), so I rejected the null hypothesis and concluded that T_assignment significantly affected the post-test Vocabulary score.
 
 ```{r table7, echo = FALSE, message = FALSE, warning = FALSE}
 # 3. linear mixed model for scores in Vocabulary
@@ -553,7 +554,7 @@ vocabulary_model <- lme(Posttest_VOCABULARY ~ T_assignment + Pretest_VOCABULARY,
 knitr::kable(Pmisc::lmeTable(vocabulary_model), caption ='The summary statistics for the fitted Vocabulary model', digits = 4)
 ```
 
-Then, Table \@ref(tab:table8) showed that the estimated marginal mean for control group and treatment group was 164 and 169 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Vocabulary. Also, the 95% confidence interval for the control group and treatment group was [161, 168] and [166, 173] respectively, so the average Vocabulary score for students in treatment group was more likely to be higher than that for students in control group.
+Then, Table \@ref(tab:table8) showed that the estimated marginal mean for control group and treatment group was 164.30 and 169.28 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Vocabulary. Also, the 95% confidence interval for the control group and treatment group was [161, 168] and [166, 173] respectively, so the average Vocabulary score for students in treatment group was more likely to be higher than that for students in control group.
 
 ```{r table8, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
@@ -571,7 +572,7 @@ overall_model <- lme(Posttest_ELA.TOTAL ~ T_assignment + Pretest_ELA.TOTAL, rand
 knitr::kable(Pmisc::lmeTable(overall_model), caption ='The summary statistics for the fitted Overall Score model', digits = 4)
 ```
 
-Besides, Table \@ref(tab:table10) showed that the estimated marginal mean for the control group and treatment group was 172 and 177 respectively, which showed that the students in treatment group tended to achieve higher average posttest overall score. Also, the 95% confidence interval for the control group and treatment group was [170, 174] and [174, 179] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which also indicated that the students in treatment group were more likely to have higher overall scores than those in control group on average.
+Besides, Table \@ref(tab:table10) showed that the estimated marginal mean for the control group and treatment group was 171.96 and 176.61 respectively, which showed that the students in treatment group tended to achieve higher average posttest overall score. Also, the 95% confidence interval for the control group and treatment group was [170, 174] and [174, 179] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which also indicated that the students in treatment group were more likely to have higher overall scores than those in control group on average.
 
 ```{r table10, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
@@ -580,7 +581,7 @@ knitr::kable(summary(emmeans(overall_model, ~ T_assignment)), caption = 'The est
 
 Moreover, the plots in Figure \@ref(fig:plot6) compared the predicted posttest score between groups for each subtest and the overall score, and all of them shared the similar pattern that for the same x value, the points for treatment group were above those for control group. This feature illustrated that for each subtest’s score and the overall score, the predicted posttest score for students in treatment group were higher than those for the students in control group with the same pretest score. 
 
-```{r plot6, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The scatter plot between pretest score and predicted posttest score for the students in control group and treatment group for each subtest and the overall score', fig.width = 15, fig.height = 8}
+```{r plot6, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The scatter plot between pretest score and predicted posttest score for the students in control group and treatment group for each subtest and the overall score', fig.width = 10, fig.height = 8}
 # scatter plot of pretest score and predicted posttest score 
 fit1 <- fitted(reading_model)
 clean_data_reading[,6] <- fit1
@@ -588,9 +589,9 @@ p1 <-clean_data_reading %>%
   ggplot(mapping = aes(x = Pretest_READING, y = fit1, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest score in Reading', y = 'Predicted posttest score',
-       title = 'Scatter plot between pretest scores and predicted posttest 
-scores in Reading for the students 
-in control group and treatment group') + 
+       title = 'Scatter plot between pretest scores and 
+predicted posttest scores in Reading for the 
+students in control group and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -613,9 +614,9 @@ p3 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = Pretest_VOCABULARY, y = fit3, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest score in Vocabulary', y = 'Predicted posttest score in Vocabulary',
-       title = 'Scatter plot between pretest scores andpredicted posttest 
-scores in Vocabulary for the students 
-       in control group and treatment group') + 
+       title = 'Scatter plot between pretest scores and 
+predicted posttest scores in Vocabulary for the 
+students in control group and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -639,7 +640,7 @@ Then, I checked the graphs for random effect and errors to see whether the model
 
 **6.1 Interpretation of Results & Key Findings:**
 
-For each fitted model, the estimated coefficient for T_assignment was positive and the p-value was very small (i.e. much smaller than 0.05), which indicated that the intervention significantly affected the post-test score in a positive direction. Also, the estimated marginal mean for treatment group was higher than that for control group, which showed that the students receiving DLL training tended to achieve higher posttest score on average than those receiving the regular education. Thus, I could conclude that DLL program improved the Spanish literacy skills of the first-grade Spanish-speaking students who had weak literacy skills, and this program was effective. 
+For each fitted model except the model for Language, the estimated coefficient for T_assignment was positive and the p-value was very small (i.e. much smaller than 0.05), which indicated that the intervention significantly affected the post-test score in a positive direction. Also, the estimated marginal mean for treatment group was higher than that for control group, which showed that the students receiving DLL training tended to achieve higher posttest score on average than those receiving the regular education. For the model for Language, although the p-value was slightly larger than 0.05, its estimate for T_assignment was positive and the estimated marginal means for treatment group was much larger than that for control group, so the result could also reveal that DLL postively affected the posttest scores. Thus, I could conclude that DLL program improved the Spanish literacy skills of the first-grade Spanish-speaking students who had weak literacy skills, and this program was effective. 
 
 This paper could conclude a causal relationship between posttest score and DLL training, because a Randomized Controlled Trial (RCT) was conducted and it ensured the random allocation of treatment and separation of control group and treatment group. All the other factors were controlled to be constant (or at least similar) between groups (based on the given information), so that groups only differed in the intervention. I could then compare each subtest’s posttest score between groups, and  any differences existed were caused by the intervention. I could also fitted the model with a binary variable representing the groups and compare the predicted values for groups, and if the effect of intervention on the outcome was statistically significant and positive, then DLL program was proven to improve the Spanish literacy skills of the enrolled students.
 
@@ -672,7 +673,7 @@ Based on the limitations, I proposed some suggestions. Firstly, besides the rand
 
 \newpage
 
-# Appendix{-}
+# Appendix
 
 **7.1 Assumptions for Reading Model:**  
 
@@ -774,7 +775,7 @@ knitr::kable(var(cbind(clean_data_language$Posttest_LANGUAGE[clean_data_language
           clean_data_language$Posttest_LANGUAGE[clean_data_language$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
-**Assumptions for Vocabulary Model:**  
+**7.3 Assumptions for Vocabulary Model:**  
 
 ```{r plot13, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Vocabulary model', fig.width = 10, fig.height = 6}
 # random effect
@@ -824,7 +825,7 @@ knitr::kable(var(cbind(clean_data_vocabulary$Posttest_VOCABULARY[clean_data_voca
           clean_data_vocabulary$Posttest_VOCABULARY[clean_data_vocabulary$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
-**Assumptions for Overall Score Model:**  
+**7.4 Assumptions for Overall Score Model:**  
 
 ```{r plot16, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Overall Score model', fig.width = 10, fig.height = 6}
 # check assumptions

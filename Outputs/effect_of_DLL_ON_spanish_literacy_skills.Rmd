@@ -4,7 +4,7 @@ author: "Jia Jia Ji"
 thanks: "Code and data are available at: https://github.com/jiaj6/effect_of_DLL_on_spanish_literacy_skills."
 date: "`r format(Sys.time(), '%d %B %Y')`"
 abstract: "Since many Spanish-speaking elementary schoolers in U.S. have weakness in developing Spanish literacy skills, Descubriendo la Lectura (DLL) is one of the approaches aiming to solve this problem. To explore the effect of DLL program on Spanish literacy skills of these students, this paper analyzed the dataset collected from a randomized controlled trial where DLL program was the intervention and the first-grade Spanish-speaking students who had the lowest literacy test scores were randomly assigned to a control group receiving the regular education and a treatment group received the DLL training. I used the Logramos literacy test to measure the Spanish literacy skills of students, then I visualized the differences in posttest scores between 2 groups, and fitted a linear mixed model for each subtest (i.e. Reading, Language, Vocabulary, and overall score) that treated the random assignment and school as the main fixed effect and random effect respectively; and I found that DLL program significantly affected all posttest scores and the students receiving DLL training achieved higher scores than those receiving the regular teaching, so this program could improve the Spanish literacy skills of target students. The government can use these findings to implement more effective literacy programs to support the academic development of these Spanish-speaking students who had poor literacy skills." 
-keywords: Descubriendo la Lectura (DLL), Spanish literacy skills, randomized controlled trial (RCT), random assignment, linear mixed model
+keywords: "Descubriendo la Lectura (DLL), Spanish literacy skills, randomized controlled trial (RCT), random assignment, linear mixed model"
 output: 
    bookdown::pdf_document2:
       latex_engine: xelatex
@@ -77,7 +77,9 @@ I mostly referred to the original paper for the design and implementation proces
 
 # Data:
 
-I used R (cite), the tidyverse package (cite), the ggplot2 package (cite) to analyze the data and make plots.
+I used `R` [@Rcitation], the `tidyverse` package [@citetidyverse], the `ggplot2` package [@citeggplot2],the `gridExtra` package [@citegridExtra], and the `knitr` package [@citeknitr1] [@citeknitr2] [@citeknitr3] to analyze the data and make plots and tables.
+
+Also, I made a data sheet ^[Data sheet is available at: https://github.com/jiaj6/effect_of_DLL_on_spanish_literacy_skills.] explaining the data information in detail based on this paper [@citedatasheet].
 
 **3.1 Intervention & Data Collection Methodology:**
 
@@ -90,10 +92,15 @@ Furthermore, this sample included the students among 22 schools across 3 U.S. st
 **3.2 Data Overview & Data Cleaning:**
 
 The dataset contained the information about school, allocation of treatment, pretest and posttest scores for 152 sample students participated in the RCT. There were 152 instances and 12 variables. Specifically, the variables were:
+
 1. StudentId: It represented the unique id number for each student and it was a nominal, categorical variable.
+
 2. SchoolId: It represented the unique id number for each of the 22 qualified schools and it was a nominal, categorical variable. It was used to identify the corresponding school for each student and was included in the models as the random effect to adjust for the school differences. 
-3. Group and T_assignment: Group was the nominal, categorical variable and T_assignment was the binary variable (that only had 2 values: 0 and 1). They both represented the results of random assignment that 0 indicated the control group (i.e. delayed group that received the DLL training in the second semester) and 1 represented the treatment group (i.e. immediate group that received the DLL training in the first semester)
+
+3. Group and T_assignment: Group was the nominal, categorical variable and T_assignment was the binary variable (that only had 2 values: 0 and 1). They both represented the results of random assignment that 0 indicated the control group (i.e. delayed group that received the DLL training in the second semester) and 1 represented the treatment group (i.e. immediate group that received the DLL training in the first semester).
+
 4. Pretest_Reading, Pretest_Language, Pretest_Vocabulary and Pretest_ELA.Total: The first 3 variables represented the test scores of each subtest (i.e. Reading, Language and Vocabulary) in Logramos took by students before implementing the treatment, and the variable Pretest_ELA.Total represented the overall score that combined the scores of 3 subtests. They were all continuous variables and were treated as the explanatory variables in the models to adjust for the slight differences in pretest scores between groups.  
+
 5. Posttest_Reading, Posttest_Language, Posttest_Vocabulary and Posttest_ELA.Total: Similarly, these variables represented the test scores of 3 subtests in Logramos took by students after the treatment finished, as well as the overall score combining the subtests’ scores. They were all continuous variables and were considered as the response variables.
 
 The sample units were people in the data, but there was no confidential information included because each instance was represented by a unique id (instead of name) and no demographics in the data. However, the data recorded the academic performance, which may be considered as sensitive information for some people.    
@@ -108,15 +115,17 @@ The variable T_assignment was a binary variable with 2 levels: 0 and 1 (0 indica
  
 The variables Pretest_Reading, Pretest_Language, Pretest_Vocabulary and Pretest_ELA.Total were continuous. For each subtest and the overall score, I made a histogram showing the distribution of the score for 2 groups, and a boxplot showing the spread of the score for each group. Also, I calculated the average of each pretest score for each group to see whether students between groups shared similar pretest scores generally. 
 
-Firstly, Figure 1 illustrated that more students in the treatment group achieved median-to-high pretest score in Reading (i.e. scores higher than 150) than that for the control group, and the spread of this score for treatment group was also slightly higher regarding the quantiles (i.e. first quantile Q1, median, third quantile Q3). Besides, Table 1 showed that the average of pretest Reading score for the students in treatment group was 153.91, which was 2.22 higher than that for the students in control group (151.69 for control group). This indicated that the students in treatment group had slightly stronger Spanish literacy skills in Reading than those in control group before the treatment. However, Figure 1 also showed that more students in the treatment group had low-to-median pretest Language score (i.e. scores lower than 162.5) than those in the control group, and the spread of this score for treatment group was lower regarding the quantiles. Also, the students in treatment group achieved 166.21 for this score on average, which was 4.85 lower than those in control group (171.06 for control group). This showed that the students in treatment group had poorer Language skills, which was the opposite situation of pretest Reading score. 
+Firstly, Figure \@ref(fig:plot1) illustrated that more students in the treatment group achieved median-to-high pretest score in Reading (i.e. scores higher than 150) than that for the control group, and the spread of this score for treatment group was also slightly higher regarding the quantiles (i.e. first quantile Q1, median, third quantile Q3). Besides, Table \@ref(tab:table1) showed that the average of pretest Reading score for the students in treatment group was 153.91, which was 2.22 higher than that for the students in control group (151.69 for control group). This indicated that the students in treatment group had slightly stronger Spanish literacy skills in Reading than those in control group before the treatment. However, Figure \@ref(fig:plot1) also showed that more students in the treatment group had low-to-median pretest Language score (i.e. scores lower than 162.5) than those in the control group, and the spread of this score for treatment group was lower regarding the quantiles. Also, the students in treatment group achieved 166.21 for this score on average, which was 4.85 lower than those in control group (171.06 for control group). This showed that the students in treatment group had poorer Language skills, which was the opposite situation of pretest Reading score. 
 
-```{r}
+```{r load data, echo = FALSE, results = FALSE, message = FALSE, warning = FALSE}
 # read the clean data 
 clean_data_reading <- read_csv('Inputs/data/clean_data_reading.csv')
 clean_data_language <- read_csv('Inputs/data/clean_data_language.csv')
 clean_data_vocabulary <- read_csv('Inputs/data/clean_data_vocabulary.csv')
 clean_data_overall <- read_csv('Inputs/data/clean_data_overall.csv')
+```
 
+```{r plot1, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The histograms and boxplots of pretest scores in Reading and Language for the students in control group and treatment group', fig.width = 10, fig.height = 8}
 ### Summary statistics & graphs ###
 
 # convert the variable T_assignment from the numerical variable to categorical variable that has 2 levels (0 and 1)
@@ -132,8 +141,9 @@ clean_data_overall$T_assignment <- as.factor(clean_data_overall$T_assignment)
 pre_reading_plot1 <- clean_data_reading %>%
   ggplot(mapping = aes(x = Pretest_READING, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Pretest score in Reading', y = 'Count/Number of students',
-       title = 'Histogram of pretest scores in Reading for the students in control group and treatment group') +
+  labs(x = 'Pretest score in Reading', y = 'Count',
+       title = 'Histogram of pretest scores in Reading for the students in 
+       control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -142,7 +152,8 @@ pre_reading_plot2 <- clean_data_reading %>%
   ggplot(mapping = aes(x = T_assignment, y = Pretest_READING, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Pretest score for Reading',
-       title = 'Boxplot of pretest scores in Reading for the students in control group and treatment group') + 
+       title = 'Boxplot of pretest scores in Reading for the students in 
+       control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
@@ -152,8 +163,9 @@ pre_reading_plot2 <- clean_data_reading %>%
 pre_language_plot1 <- clean_data_language %>%
   ggplot(mapping = aes(x = Pretest_LANGUAGE, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Pretest score of Language', y = 'Count/Number of students', 
-       title = 'Histogram of pretest scores in Language for the students in control group and treatment group') +
+  labs(x = 'Pretest score of Language', y = 'Count', 
+       title = 'Histogram of pretest scores in Language for the students 
+in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -162,7 +174,8 @@ pre_language_plot2 <- clean_data_language %>%
   ggplot(mapping = aes(x = T_assignment, y = Pretest_LANGUAGE, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Pretest score in Language',
-       title = 'Boxplot of pretest scores in Language for the students in control group and treatment group') + 
+       title = 'Boxplot of pretest scores in Language for the students in 
+       control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
@@ -173,15 +186,17 @@ grid.arrange(arrangeGrob(pre_reading_plot1, pre_reading_plot2, ncol = 2),
 ```
 
 
-Besides, as the histograms in Figure 2 shown, for both pretest Vocabulary score and pretest overall score, the distributions between control group and treatment group were similar, in other words, the number of students distributed within a specific score range was similar. Also, these 2 groups had similar spreads in both the boxplot for pretest Vocabulary score and the boxplot for overall score, except that the control group had a slightly higher Q3 than the treatment group for the overall score. Table 1 showed that the students in control group and treatment group had very similar average score for both pretest Vocabulary score and overall score (pretest Vocabulary score: 160.28 for control group, 159.34 for treatment group, overall score: 162.98 for control group, 162.50 for treatment group). So, these graphs and numbers indicated that the students in control group and treatment group shared a similar level of Vocabulary skills and overall Spanish literacy skills before the treatment.
-```{r}
+Besides, as the histograms in Figure \@ref(fig:plot2) shown, for both pretest Vocabulary score and pretest overall score, the distributions between control group and treatment group were similar, in other words, the number of students distributed within a specific score range was similar. Also, these 2 groups had similar spreads in both the boxplot for pretest Vocabulary score and the boxplot for overall score, except that the control group had a slightly higher Q3 than the treatment group for the overall score. Table \@ref(tab:table1) showed that the students in control group and treatment group had very similar average score for both pretest Vocabulary score and overall score (pretest Vocabulary score: 160.28 for control group, 159.34 for treatment group, overall score: 162.98 for control group, 162.50 for treatment group). So, these graphs and numbers indicated that the students in control group and treatment group shared a similar level of Vocabulary skills and overall Spanish literacy skills before the treatment.
+
+```{r plot2, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The histograms and boxplots of the pretest scores in Vocabulary and the overall score for the students in control group and treatment group',fig.width = 10, fig.height = 8}
 # 3. pre-test score for Vocabulary (Pretest_VOCABULARY):
 # draw the histogram for 2 groups 
 pre_vocabulary_plot1 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = Pretest_VOCABULARY, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Pretest score in Vocabulary', y = 'Count/Number of students', 
-       title = 'Histogram of pretest scores in Vocabulary for the students in control group and treatment group') +
+  labs(x = 'Pretest score in Vocabulary', y = 'Count', 
+       title = 'Histogram of pretest scores in Vocabulary for the students in 
+       control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -190,7 +205,8 @@ pre_vocabulary_plot2 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = T_assignment, y = Pretest_VOCABULARY, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Pretest score in Vocabulary',
-       title = 'Boxplot of pretest scores in Vocabulary for the students in control group and treatment group:',
+       title = 'Boxplot of pretest scores in Vocabulary for the students in 
+       control group and treatment group:',
        subtitle = '') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
@@ -202,8 +218,9 @@ pre_overall_plot1 <- clean_data_overall %>%
   ggplot(mapping = aes(x = Pretest_ELA.TOTAL, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
   labs(x = 'Pretest overall score', 
-       y = 'Count/Number of students', 
-       title = 'Histogram of pretest overall scores for the students in control group and treatment group') +
+       y = 'Count', 
+       title = 'Histogram of pretest overall scores for the students in 
+       control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -212,17 +229,18 @@ pre_overall_plot2 <- clean_data_overall %>%
   ggplot(mapping = aes(x = T_assignment, y = Pretest_ELA.TOTAL, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Pretest overall score',
-       title = 'Boxplot of pretest overall scores for the students in control group and treatment group') + 
+       title = 'Boxplot of pretest overall scores for the students in 
+       control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
 
-# put the histograms and boxplots for teh pretest_Vocabulary and pretetst total 
+# put the histograms and boxplots for the pretest_Vocabulary and pretetst total 
 grid.arrange(arrangeGrob(pre_vocabulary_plot1, pre_vocabulary_plot2, ncol = 2),
              arrangeGrob(pre_overall_plot1, pre_overall_plot2, ncol = 2))
 ```
 
-```{r}
+```{r table1, echo = FALSE, message = FALSE, warning = FALSE}
 # make a table of the average value of all 3 subtests and 1 overall score
 # filter the pretest scores for control group
 control_pre_re_avg <- clean_data_reading %>%
@@ -266,7 +284,7 @@ pre_avg_table <- as.table(pre_avg_summary)
 rownames(pre_avg_table) <- c('Control', 'Treatment')
 colnames(pre_avg_table) <- c('Reading' ,'Language', 'Vocabulary', 'Overall score')
 pre_avg_table <- pre_avg_table %>%
-  knitr::kable(caption = 'Average value of the pretest scores for 3 subtests and the overall score for the students in control group and treatment group',
+  knitr::kable(caption = 'Average value of the 3 subtests\' pretest scores and the overall score for the students in control group and treatment group',
                align = c('l', 'l', 'l', 'l'), digits = 2)
 pre_avg_table
 ```
@@ -277,15 +295,17 @@ In the data, although the treatment group had slightly higher pretest Reading sc
 
 The variables Posttest_Reading, Posttest_Language, Posttest_Vocabulary and Posttest_ELA.Total were continuous. Similar to the pretest scores, for each subtest and the overall score, I made a histogram and a boxplot, and calculated the average for each group to compare the posttest scores between groups and see whether the treatment was effective (i.e. the students in treatment group tended to achieve higher posttest scores generally).   
 
-Figure 3 illustrated that for each subtest’s posttest score (i.e. Reading, Language and Vocabulary) and the overall score, more students in the treatment group achieved median-to-high score (i.e. scores higher than 175) than those in the control group. Meanwhile, for each posttest score, the treatment group had higher spread than that for the control group regarding the quantiles (i.e. Q1, median and Q3). Also, Table 2 showed that the average posttest overall score for the students in treatment group was 176.39, which was 4.44 higher than that for the students in control group (171.95 for control group). Similarly, the students in treatment group had higher posttest scores on average for all 3 subtests (i.e. Language: 177.62 and 180.42 for control group and treatment group respectively, Vocabulary: 164.38 and 169.10 for control group and treatment group respectively). Particularly, the average posttest Reading score for treatment group was 172.61, which was 5.63 higher than that for control group (166.98 for control group), probably because DLL is a Spanish-version Reading Recovery Program (cite). Therefore, the students receiving the DLL training tended to achieve stronger Spanish literacy skills than those receiving the regular teaching, and DLL program was possible to be effective.
-```{r}
+Figure \@ref(fig:plot3) and Figure \@ref(fig:plot4) illustrated that for each subtest’s posttest score (i.e. Reading, Language and Vocabulary) and the overall score, more students in the treatment group achieved median-to-high score (i.e. scores higher than 175) than those in the control group. Meanwhile, for each posttest score, the treatment group had higher spread than that for the control group regarding the quantiles (i.e. Q1, median and Q3). Also, Table \@ref(tab:table2) showed that the average posttest overall score for the students in treatment group was 176.39, which was 4.44 higher than that for the students in control group (171.95 for control group). Similarly, the students in treatment group had higher posttest scores on average for all 3 subtests (i.e. Language: 177.62 and 180.42 for control group and treatment group respectively, Vocabulary: 164.38 and 169.10 for control group and treatment group respectively). Particularly, the average posttest Reading score for treatment group was 173.08, which was 6.1 higher than that for control group (166.98 for control group), probably because DLL is a Spanish-version Reading Recovery Program [@citepaper]. Therefore, the students receiving the DLL training tended to achieve stronger Spanish literacy skills than those receiving the regular teaching, and DLL program was possible to be effective.
+
+```{r plot3, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The histograms and boxplots of the posttest scores in Reading and Language for the students in control group and treatment group', fig.width = 10, fig.height = 6}
 # 1. posttest score for Reading (Posttest_READING):
 # draw the histogram of this variable for 2 groups (0 means control group, 1 means treatment group)
 post_reading_plot1 <- clean_data_reading %>%
   ggplot(mapping = aes(x = Posttest_READING, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Posttest score in Reading', y = 'Count/Number of students',
-       title = 'Histogram of posttest scores in Reading for the students in control group and treatment group') +
+  labs(x = 'Posttest score in Reading', y = 'Count',
+       title = 'Histogram of posttest scores in Reading for the students 
+       in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -294,7 +314,8 @@ post_reading_plot2 <- clean_data_reading %>%
   ggplot(mapping = aes(x = T_assignment, y = Posttest_READING, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Posttest score in Reading',
-       title = 'Boxplot of posttest scores in Reading for the students in control group and treatment group') + 
+       title = 'Boxplot of posttest scores in Reading for the students 
+       in control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
@@ -304,8 +325,9 @@ post_reading_plot2 <- clean_data_reading %>%
 post_language_plot1 <- clean_data_language %>%
   ggplot(mapping = aes(x = Posttest_LANGUAGE, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Posttest score in Language', y = 'Count/Number of students', 
-       title = 'Histogram of posttest scores in Language for the students in control group and treatment group') +
+  labs(x = 'Posttest score in Language', y = 'Count', 
+       title = 'Histogram of posttest scores in Language for the students 
+       in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -314,20 +336,25 @@ post_language_plot2 <- clean_data_language %>%
   ggplot(mapping = aes(x = T_assignment, y = Posttest_LANGUAGE, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Posttest score in Language',
-       title = 'Boxplot of posttest scores in Language for the students in control group and treatment group:',
-       subtitle = '') + 
+       title = 'Boxplot of posttest scores in Language for the students
+       in control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
 
+grid.arrange(arrangeGrob(post_reading_plot1, post_reading_plot2, ncol = 2),
+             arrangeGrob(post_language_plot1, post_language_plot2, ncol = 2))
+```
 
+```{r plot4, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The histograms and boxplots of the posttest scores in Vocabulary and the overall score for the students in control group and treatment group', fig.width = 10, fig.height = 6}
 # 3. post-test score for Vocabulary (Posttest_VOCABULARY):
 # draw the histogram for 2 groups 
 post_vocabulary_plot1 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = Posttest_VOCABULARY, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
-  labs(x = 'Posttest score in Vocabulary', y = 'Count/Number of students', 
-       title = 'Histogram of posttest scores in Vocabulary for the students in control group and treatment group') +
+  labs(x = 'Posttest score in Vocabulary', y = 'Counts', 
+       title = 'Histogram of posttest scores in Vocabulary for the students 
+       in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -336,8 +363,8 @@ post_vocabulary_plot2 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = T_assignment, y = Posttest_VOCABULARY, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Posttest score in Vocabulary',
-       title = 'Boxplot of posttest scores in Vocabulary for the students in control group and treatment group:',
-       subtitle = '') + 
+       title = 'Boxplot of posttest scores in Vocabulary for the students 
+in control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
@@ -349,8 +376,9 @@ post_overall_plot1 <- clean_data_overall %>%
   ggplot(mapping = aes(x = Posttest_ELA.TOTAL, fill = T_assignment)) + 
   geom_histogram(position = 'dodge', bins = 30) +
   labs(x = 'Posttest overall score', 
-       y = 'Count/Number of students', 
-       title = 'Histogram of posttest overall scores for the students in control group and treatment group') +
+       y = 'Count', 
+       title = 'Histogram of posttest overall scores for the students 
+       in control group and treatment group') +
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
@@ -359,18 +387,18 @@ post_overall_plot2 <- clean_data_overall %>%
   ggplot(mapping = aes(x = T_assignment, y = Posttest_ELA.TOTAL, fill = T_assignment)) + 
   geom_boxplot() +
   labs(x = 'Group', y = 'Posttest overall score',
-       title = 'Boxplot of posttest overall scores for the students in control group and treatment group') + 
+       title = 'Boxplot of posttest overall scores for the students 
+       in control group and treatment group') + 
   scale_fill_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   scale_x_discrete(breaks = c('0', '1'), labels = c('Control', 'Treatment')) +
   theme(legend.position = 'none')
 
 # put the histogram and boxplot together horizontally
-grid.arrange(arrangeGrob(post_reading_plot1, post_reading_plot2, ncol = 2),
-             arrangeGrob(post_vocabulary_plot1, post_vocabulary_plot2, ncol = 2),
-             arrangeGrob(post_language_plot1, post_language_plot2, ncol = 2),
-             arrangeGrob(post_overall_plot1, post_overall_plot2, ncol = 2), ncol = 2)
+grid.arrange(arrangeGrob(post_vocabulary_plot1, post_vocabulary_plot2, ncol = 2),
+             arrangeGrob(post_overall_plot1, post_overall_plot2, ncol = 2))
+```
 
-            
+```{r table2, echo = FALSE, message = FALSE, warning = FALSE}
 # make a table of the average value of all 3 subtests and 1 overall score
 # filter the posttest scores for control group
 control_post_re_avg <- clean_data_reading %>%
@@ -391,7 +419,7 @@ control_post_overall_avg <- clean_data_overall %>%
   sapply(mean)
 
 # filter the posttest scores for treatment group
-trt_post_la_avg <- clean_data_reading %>%
+trt_post_re_avg <- clean_data_reading %>%
   filter(T_assignment == '1') %>%
   select(Posttest_READING) %>%
   sapply(mean)
@@ -407,9 +435,7 @@ trt_post_overall_avg <- clean_data_overall %>%
   filter(T_assignment == '1') %>%
   select(Posttest_ELA.TOTAL) %>%
   sapply(mean)
-```
 
-```{r}
 # combine the mean of 2 groups in 1 table
 post_avg_summary <- matrix(c(control_post_re_avg, control_post_la_avg, control_post_vo_avg, control_post_overall_avg,
                              trt_post_re_avg, trt_post_la_avg, trt_post_vo_avg, trt_post_overall_avg), ncol = 4, byrow = TRUE)
@@ -422,23 +448,24 @@ post_avg_table <- post_avg_table %>%
 post_avg_table
 ```
 
-Moreover, in Figure 4, most points for the treatment group were distributed in the upper part of the plot, also the linear best fit line for treatment group was above that for control group, which showed that most students that received DLL training tended to have higher posttest overall score than those that had similar pretest overall score but received the regular teaching. Thus, DLL program was possibly effective for the target students. 
-```{r}
+Moreover, in Figure \@ref(fig:plot5), most points for the treatment group were distributed in the upper part of the plot, also the linear best fit line for treatment group was above that for control group, which showed that most students that received DLL training tended to have higher posttest overall score than those that had similar pretest overall score but received the regular teaching. Thus, DLL program was possibly effective for the target students. 
+
+```{r plot5, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The scatter plot between pretest overall scores and posttest overall score for the students in control group and treatment group', fig.width = 6, fig.height = 4}
 # draw a scatter plot between pretest overall score and posttest overall score for 2 groups, and add the best fit line (linear)
 clean_data_overall %>%
   ggplot(mapping = aes(x = Pretest_ELA.TOTAL, y = Posttest_ELA.TOTAL, color = T_assignment)) + 
   geom_point() + 
   geom_smooth(method = lm, aes(color = T_assignment)) +
   labs(x = 'Pretest overall score', y = 'Posttest overall score',
-       title = 'Scatter plot between pretest overall score and posttest overall score for the students in control group and treatment group',
-       subtitle = '') +
+       title = 'Scatter plot between pretest overall score and posttest overall score
+       for the students in control group and treatment group') +
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme()
 ```
 
 # Model:
 
-I built a model for each subtest (including the overall score) to see the effect of DLL on the skills of each subtest more clearly.
+I built a model for each subtest (including the overall score) to see the effect of DLL on the skills of each subtest more clearly. Also, I made a model card ^[Model card is available at: https://github.com/jiaj6/effect_of_DLL_on_spanish_literacy_skills.] explaining the model information in detail based on this paper [@citemodelcard]. 
 
 This paper aimed to investigate whether the intervention (i.e. DLL program) affected the Spanish literacy skills of students, accordingly, each posttest score of Logramos was treated as the outcome to measure the students’ Spanish literacy skills after receiving the DLL training or regular teaching. So, the continuous variables Posttest_Reading, Posttest_Language, Posttest_Vocabulary and Posttest_ELA.Total were included in the models as the response variables. Since the posttest score was continuous, and motivated by the appropriate linear best fit line in the scatter plot between pretest overall score and posttest overall score in the Data section, I chose the linear relationship in this model. Besides, since students were sampled from schools and the repeated measurements existed, there may be correlations within each school and some schools may have higher teaching quality than others. Thus, I used the linear mixed model and treated the variable School_id as the random effect to represent each school and adjust for the school differences. Meanwhile, the random allocation of treatment was treated as the fixed effect (i.e. explanatory variable) to explore its relationship to the posttest scores, so I used the binary variable T_assignment in the model to easily distinguish the 2 groups and make predictions on the posttest scores based on the group. Besides, in the Data section, although I found that students between groups had similar pretest overall scores, the students in treatment group still had slightly higher and lower pretest score in Reading and Language respectively than those in control group. So, I included the pretest score, which belonged to the same subtest as the post-test score, as another fixed effect to adjust for the slight difference in this subtest’s pretest score between groups and improve the accuracy of analysis results. I added the continuous variable Pretest_Reading, or Pretest_Language, or Pretest_Vocabulary or Pretest_ELA.Total as another explanatory variable in the model. By fitting this linear mixed model with the data, I could know how being assigned to different groups and receiving different forms of education would affect the posttest scores, and conclude that whether the intervention (i.e. DLL program) affected the Spanish literacy skills of target students and whether this program was effective. 
 
@@ -449,7 +476,8 @@ $(posttest score)_{ij} = \beta_{0} + \beta_{1} (T\_assignment)_{ij} + \beta_{2} 
 where i was the student index, j was the school index; $\beta_{0}$ was the intercept or the post-test score for a student that was in the control group and had a pre-test score of 0, $\beta_{1}$ was the estimate of the effect of random assignment (that was, the intervention) on a subtest’s posttest score of student i in school j, T_assignment was the random allocation of treatment for student i in school j and its reference level was 0 (i.e. control group), $\beta_{2}$ was the estimate of the effect of a subtest’s pretest score on its posttest score of student i in school j, School_id was the random effect and it was used to identify the school, Residual was the student-level error term for student i in school j. Also, posttest score and pretest score were the score for each subtest before and after the treatment respectively for student i in school j.
 
 For example, the model for the subtest Reading was:
-$(Posttest_Reading)_{ij} = \beta_{0} + \beta_{1} (T\_assignment)_{ij} + \beta_{2} (Pretest_Reading)_{ij} + (School\_id)_{j} + (Residual)_{ij}$, i = 1, 2, …, 124, j = 1, 2, …, 22 
+
+$(Posttest\_Reading)_{ij} = \beta_{0} + \beta_{1} (T\_assignment)_{ij} + \beta_{2} (Pretest\_Reading)_{ij} + (School\_id)_{j} + (Residual)_{ij}$, i = 1, 2, …, 124, j = 1, 2, …, 22 
 
 So, the model made predictions on the posttest score for each subtest based on the group assignment and this subtest’s pretest score of each student, meanwhile it used the random effect School_id to consider the correlations within each school and the school differences. It also had a coefficient before each explanatory variable to estimate its effect on the outcome. 
 
@@ -458,12 +486,15 @@ I did not include the interaction term between T_assignment and pretest score in
 This linear mixed model involved the linear relationship, so it was straightforward and easy to interpret. And, this model was more appropriate than the Linear Regression Model, because it also considered the random effect based on the nature of this RCT (i.e. had repeated measurements) and simply using the linear model would be misleading. If the participated students were all sampled from the same school, then no random effect needed in the model and the linear regression model was enough to model the effect of DLL on posttest score. As I discussed in the Data section, the data did not have the demographics, so that I could not include the demographic variables as another fixed effects in the model and adjust for any differences in these variables between groups to improve the model performance.   
 
 Based on the aim of this paper (i.e. to explore the effect of DLL program on the posttest score), this model was equivalent to the hypothesis test:
-Null hypothesis $H_{0}$: $\beta_{1}$ = 0, i.e. no effect of DLL on the posttest score
-Alternative hypothesis $H_{1}$: $\beta_{1}$ ≠ 0, i.e. there is effect of DLL on the posttest score
+
+Null hypothesis $H_{0}$: $\beta_{1}$ was 0, i.e. no effect of DLL on the posttest score
+
+Alternative hypothesis $H_{1}$: $\beta_{1}$ was not 0, i.e. there is effect of DLL on the posttest score.
 
 So, I could check the p-values for each variable after fitting the model to see whether I should reject the null hypothesis or not and whether an effect was statistically significant. If an effect was statistically significant, I could also check its estimated coefficient to explore how this variable affected the outcome (i.e. posttest score).  
 
-There were 3 assumptions for the linear mixed model: 
+There were 3 main assumptions for the linear mixed model: 
+
 1. Random effect School_id followed the Normal distribution with a mean of 0 and constant variance.
 2. Error term Residual followed the Normal distribution with a mean of 0 and constant variance.
 3. Random effect and error term were independent.
@@ -472,136 +503,152 @@ Firstly, I made the histogram and QQ plot of School_id in the fitted model to ch
 
 # Results:
 
-I used R (cite), the tidyverse package (cite), the ggplot2 package (cite), the emmeans package (cite), the lmm package (cite) to format and visualize the model results.
+I used `R` [@Rcitation], the `tidyverse` package [@citetidyverse], the `ggplot2` package [@citeggplot2], the `gridExtra` package [@citegridExtra], the `knitr` package [@citeknitr1] [@citeknitr2] [@citeknitr3], the`emmeans` package [@citeemmeans], the `nlme` package [@citenlme], the `Pmisc` package [@citePmisc], and the 'lme4` [@citelme4] to format and visualize the results from the linear mixed models.
 
 I fitted the linear mixed model for each subtest and the overall score.  For each fitted model, I displayed the summary statistics using tables and visualized the predicted outcomes using scatter plots. For the summary statistics, MLE (Maximum Likelihood Estimate) represents the estimate of the effect of a variable on the posttest score using Maximum Likelihood Estimation method, p-value is the probability of getting a value as extreme or more extreme than observed statistic if assuming that the null hypothesis is true. I used 0.05 significance level to determine whether to reject the null hypothesis or not, specifically, I would reject the null hypothesis if p-value was smaller than 0.05, while I would fail to reject the null hypothesis if p-value was larger than 0.05. But this significance level would not be used as a strict threshold to determine whether a variable significantly affected the outcome, the decision would also depend on the context. The emmeans (estimated marginal mean) is the predicted average outcome for a model, and 95% confidence interval represents that there is 95% probability that a range of value contains the true mean. 
 
 **5.1 Result of the model for posttest score in Reading:**
 
-Table 3 showed that the MLE (i.e. estimated coefficient) for the intercept was 116.50, which represented that a student in control group with pretest Reading score of 0 was predicted to have a posttest score in Reading of 116.50. Besides, the MLE for the allocation of treatment (i.e. T_assignment) was 5.36, which showed that the posttest score of a student in treatment group was 5.36 higher than that of a student in control group with the same pretest Reading score. Also, the p-value of T_assignment was 0.0015, which was much smaller than 0.05, so I rejected the null hypothesis and considered the variable T_assignment as significantly affecting the posttest Reading score.
-```{r}
+Table \@ref(tab:table3) showed that the MLE (i.e. estimated coefficient) for the intercept was 116.50, which represented that a student in treatment group with pretest Reading score of 0 was predicted to have a posttest score in Reading of 116.50. Besides, the MLE for the allocation of treatment (i.e. T_assignment) was 5.36, which showed that the posttest score of a student in treatment group was 5.36 higher than that of a student in control group with the same pretest Reading score. Also, the p-value of T_assignment was 0.0015, which was much smaller than 0.05, so I rejected the null hypothesis and considered the variable T_assignment as significantly affecting the posttest Reading score.
+
+```{r table3, echo = FALSE, message = FALSE, warning = FALSE}
 # 1. linear mixed model for scores in Reading
 reading_model <- lme(Posttest_READING ~ T_assignment + Pretest_READING, random = ~1|SCHOOLID, method = 'REML', data = clean_data_reading)
 # summary statistics
-knitr::kable(Pmisc::lmeTable(reading_model))
+knitr::kable(Pmisc::lmeTable(reading_model), caption ='The summary statistics for the fitted Reading model', digits = 4)
 ```
 
-Moreover, Table 4 showed that the estimated marginal mean for the control group and treatment group was 167 and 173 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Reading. Also, the 95% confidence interval for the control group and treatment group was [165, 170] and [170, 175] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which indicated that the students in treatment group were more likely to achieve a higher average Reading score than those in control group.
-```{r}
+Moreover, Table \@ref(tab:table4) showed that the estimated marginal mean for the control group and treatment group was 167.37 and 172.73 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Reading. Also, the 95% confidence interval for the control group and treatment group was [165, 170] and [170, 175] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which indicated that the students in treatment group were more likely to achieve a higher average Reading score than those in control group.
+```{r table4, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
-summary(emmeans(reading_model, ~ T_assignment))
+knitr::kable(summary(emmeans(reading_model, ~ T_assignment)), caption = 'The estimated marginal means for T.assignment in the fitted Reading model', digits = 2)
 ```
 
 **5.2 Result of the model for posttest score in Language:**
 
-Table 5 showed that the MLE for the intercept was 107.26, which was the predicted posttest score in Language of the student in control group with pretest Language score of 0. Then, the MLE for T_assignment was 4.98, which showed that the posttest Language score of the student in treatment group was 4.98 higher than that of the student in control group with the same pretest score. Also, the p-value of T_assignment was 0.0082 and it was much smaller than 0.05, so I rejected the null hypothesis, which indicated that T_assignment statistically significantly affected the posttest score in Language.
-```{r}
-# 3. linear mixed model for scores in Language
+Table \@ref(tab:table5) showed that the MLE for the intercept was 156.57, which was the predicted posttest score in Language of the student in treatment group with pretest Language score of 0. Then, the MLE for T_assignment was 3.42, which showed that the posttest Language score of the student in treatment group was 3.42 higher than that of the student in control group with the same pretest score. Also, the p-value of T_assignment was 0.065 and it was slightly larger than 0.05, so I failed to reject the null hypothesis, which indicated that T_assignment did not statistically significantly affected the posttest score in Language.
+
+```{r table5, echo = FALSE, message = FALSE, warning = FALSE}
+# 2. linear mixed model for scores in Language
 language_model <- lme(Posttest_LANGUAGE ~ T_assignment + Pretest_LANGUAGE, random = ~1|SCHOOLID, method = 'REML', data = clean_data_language)
 # summary statistics
-knitr::kable(Pmisc::lmeTable(language_model))
+knitr::kable(Pmisc::lmeTable(language_model), caption ='The summary statistics for the fitted Language model', digits = 4)
 ```
 
-Besides, Table 6 showed that the estimated marginal mean for control group and treatment group was 177 and 181 respectively, which showed that the students in treatment group tended to have higher average posttest Language score. Also, the 95% confidence interval for control group and treatment group was [174, 181] and [178, 184] respectively, so the students in treatment group were more likely to achieve a higher average Language score than those in control group.
-```{r}
+Besides, Table \@ref(tab:table6) showed that the estimated marginal mean for control group and treatment group was 177.48 and 180.90 respectively, which showed that the students in treatment group tended to have higher average posttest Language score. Also, the 95% confidence interval for control group and treatment group was [174, 181] and [178, 184] respectively, so the students in treatment group were more likely to achieve a higher average Language score than those in control group.
+
+```{r table6, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
-summary(emmeans(language_model, ~ T_assignment))
+knitr::kable(summary(emmeans(language_model, ~ T_assignment)), caption = 'The estimated marginal means for T.assignment in the fitted Language model', digits = 2)
 ```
 
 
 **5.3 Result of the model for post-test score in Vocabulary:**
 
-Table 7 showed that the MLE for the intercept was 107.26, which represented that the student in control group with pretest Vocabulary score of 0 was predicted to have a posttest score in Vocabulary of 107.26. Besides, the MLE for T_assignment was 4.98, which showed that the posttest score of a student in treatment group was 4.98 higher than that of a student in control group with the same pre-test score. Also, the p-value of T_assignment was much smaller than 0.05 (i.e. p-value was 0.0008), so I rejected the null hypothesis and concluded that T_assignment significantly affected the post-test Vocabulary score.
-```{r}
+Table \@ref(tab:table7) showed that the MLE for the intercept was 107.26, which represented that the student in treatment group with pretest Vocabulary score of 0 was predicted to have a posttest score in Vocabulary of 107.26. Besides, the MLE for T_assignment was 4.98, which showed that the posttest score of a student in treatment group was 4.98 higher than that of a student in control group with the same pre-test score. Also, the p-value of T_assignment was much smaller than 0.05 (i.e. p-value was 0.008), so I rejected the null hypothesis and concluded that T_assignment significantly affected the post-test Vocabulary score.
+
+```{r table7, echo = FALSE, message = FALSE, warning = FALSE}
 # 3. linear mixed model for scores in Vocabulary
 vocabulary_model <- lme(Posttest_VOCABULARY ~ T_assignment + Pretest_VOCABULARY, random = ~1|SCHOOLID, method = 'REML', data = clean_data_vocabulary)
 # summary statistics
-knitr::kable(Pmisc::lmeTable(vocabulary_model))
+knitr::kable(Pmisc::lmeTable(vocabulary_model), caption ='The summary statistics for the fitted Vocabulary model', digits = 4)
 ```
 
-Then, Table 8 showed that the estimated marginal mean for control group and treatment group was 164 and 169 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Vocabulary. Also, the 95% confidence interval for the control group and treatment group was [161, 168] and [166, 173] respectively, so the average Vocabulary score for students in treatment group was more likely to be higher than that for students in control group.
-```{r}
+Then, Table \@ref(tab:table8) showed that the estimated marginal mean for control group and treatment group was 164.30 and 169.28 respectively, which showed that the students in treatment group tended to achieve higher average posttest score in Vocabulary. Also, the 95% confidence interval for the control group and treatment group was [161, 168] and [166, 173] respectively, so the average Vocabulary score for students in treatment group was more likely to be higher than that for students in control group.
+
+```{r table8, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
-summary(emmeans(vocabulary_model, ~ T_assignment))
+knitr::kable(summary(emmeans(vocabulary_model, ~ T_assignment)), caption = 'The estimated marginal means for T.assignment in the fitted Vocabulary model', digits = 2)
 ```
 
 **5.4 Result of the model for post-test overall total score:**
 
-Table 9 showed that the MLE for the intercept was 85.92, which represented that a student in control group with pretest overall score of 0 was predicted to have a posttest overall score of 85.92. Also, the MLE for T_assignment was 4.64, which showed that the posttest overall score of a student in treatment group was 4.64 higher than that of a student in control group with the same pre-test overall score. And, the p-value of T_assignment was 0.0012, which was much smaller than 0.05, so I rejected the null hypothesis. Thus, the random allocation of treatment (i.e. T_assignment) significantly affected the posttest overall score.
-```{r}
+Table \@ref(tab:table9) showed that the MLE for the intercept was 85.92, which represented that a student in control group with pretest overall score of 0 was predicted to have a posttest overall score of 85.92. Also, the MLE for T_assignment was 4.64, which showed that the posttest overall score of a student in treatment group was 4.64 higher than that of a student in control group with the same pre-test overall score. And, the p-value of T_assignment was 0.0012, which was much smaller than 0.05, so I rejected the null hypothesis. Thus, the random allocation of treatment (i.e. T_assignment) significantly affected the posttest overall score.
+
+```{r table9, echo = FALSE, message = FALSE, warning = FALSE}
 # 4. linear mixed model for overall scores
 overall_model <- lme(Posttest_ELA.TOTAL ~ T_assignment + Pretest_ELA.TOTAL, random = ~1|SCHOOLID, method = 'REML', data = clean_data_overall)
 # summary statistics
-knitr::kable(Pmisc::lmeTable(overall_model))
+knitr::kable(Pmisc::lmeTable(overall_model), caption ='The summary statistics for the fitted Overall Score model', digits = 4)
 ```
 
-Besides, Table 10 showed that the estimated marginal mean for the control group and treatment group was 172 and 177 respectively, which showed that the students in treatment group tended to achieve higher average posttest overall score. Also, the 95% confidence interval for the control group and treatment group was [170, 174] and [174, 179] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which also indicated that the students in treatment group were more likely to have higher overall scores than those in control group on average.
-```{r}
+Besides, Table \@ref(tab:table10) showed that the estimated marginal mean for the control group and treatment group was 171.96 and 176.61 respectively, which showed that the students in treatment group tended to achieve higher average posttest overall score. Also, the 95% confidence interval for the control group and treatment group was [170, 174] and [174, 179] respectively, so the treatment group had a higher upper bound and a higher lower bound than the control group, which also indicated that the students in treatment group were more likely to have higher overall scores than those in control group on average.
+
+```{r table10, echo = FALSE, message = FALSE, warning = FALSE}
 # estimated marginal means for T_assignment
-summary(emmeans(overall_model, ~ T_assignment))
+knitr::kable(summary(emmeans(overall_model, ~ T_assignment)), caption = 'The estimated marginal means for T.assignment in the fitted Overall Score model', digits = 2)
 ```
 
-Moreover, the plots in Figure 5 compared the predicted posttest score between groups for each subtest and the overall score, and all of them shared the similar pattern that for the same x value, the points for treatment group were above those for control group. This feature illustrated that for each subtest’s score and the overall score, the predicted posttest score for students in treatment group were higher than those for the students in control group with the same pretest score. 
+Moreover, the plots in Figure \@ref(fig:plot6) compared the predicted posttest score between groups for each subtest and the overall score, and all of them shared the similar pattern that for the same x value, the points for treatment group were above those for control group. This feature illustrated that for each subtest’s score and the overall score, the predicted posttest score for students in treatment group were higher than those for the students in control group with the same pretest score. 
 
-```{r}
+```{r plot6, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The scatter plot between pretest score and predicted posttest score for the students in control group and treatment group for each subtest and the overall score', fig.width = 10, fig.height = 8}
 # scatter plot of pretest score and predicted posttest score 
 fit1 <- fitted(reading_model)
-clean_data[,12] <- fit1
+clean_data_reading[,6] <- fit1
 p1 <-clean_data_reading %>%
   ggplot(mapping = aes(x = Pretest_READING, y = fit1, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest score in Reading', y = 'Predicted posttest score',
-       title = 'Scatter plot between pretest scores and predicted posttest scores in Reading for the students in control group and treatment group') + 
+       title = 'Scatter plot between pretest scores and 
+predicted posttest scores in Reading for the 
+students in control group and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
 fit2 <- fitted(language_model)
-clean_data[,12] <- fit2
+clean_data_language[,6] <- fit2
 p2 <- clean_data_language %>%
   ggplot(mapping = aes(x = Pretest_LANGUAGE, y = fit2, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest score in Language', y = 'Predicted posttest score in Language',
-       title = 'Scatter plot between pretest scores and predicted posttest scores in Language for the students in control group and treatment group') + 
+       title = 'Scatter plot between pretest scores and 
+       predicted posttest scores in Language 
+for the students in control group 
+and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
 fit3 <- fitted(vocabulary_model)
-clean_data[,12] <- fit3
+clean_data_vocabulary[,6] <- fit3
 p3 <- clean_data_vocabulary %>%
   ggplot(mapping = aes(x = Pretest_VOCABULARY, y = fit3, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest score in Vocabulary', y = 'Predicted posttest score in Vocabulary',
-       title = 'Scatter plot between pretest scores and predicted posttest scores in Vocabulary for the students in control group and treatment group') + 
+       title = 'Scatter plot between pretest scores and 
+predicted posttest scores in Vocabulary for the 
+students in control group and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 
 fit4 <- fitted(overall_model)
-clean_data[,12] <- fit4
+clean_data_overall[,6] <- fit4
 p4 <- clean_data_overall %>%
   ggplot(mapping = aes(x = Pretest_ELA.TOTAL, y = fit4, color = T_assignment)) + 
   geom_point() +
   labs(x = 'Pretest overall score', y = 'Predicted posttest overall score',
-       title = 'Scatter plot between pretest oervall scores and predicted posttest overall scores for the students in control group and treatment group') + 
+       title = 'Scatter plot between pretest oervall scores and
+       predicted posttest overall scores for the students 
+       in control group and treatment group') + 
   scale_color_discrete(name = 'Group', labels = c('Control', 'Treatment')) +
   theme_minimal()
 grid.arrange(p1, p2, p3, p4, ncol = 2)
 ```
 
-Then, I checked the graphs for random effect and errors to see whether the model assumptions were satisfied, I found that all 4 fitted models had similar patterns. (I included the figures for model assumptions in the Appendix.) Figure 6, Figure 7, Figure 8 and Figure 9 depicted that for each model, the random effect was roughly normally distributed and most points in the QQ plot were on/near the QQ line, so the random effect followed the normal distribution. Also, there was no apparent pattern in both the plot of random effect and the scatter plot between random effect and fitted value, which indicated that the random effect had constant variance. So, the normality assumption and the constant variance assumption for random effect were satisfied. Similarly, Figure 10, Figure 11, Figure 12 and Figure 13 showed that errors was roughly normally distributed and most points in the QQ plot were on/near the QQ line, so that errors followed the normal distribution. Also, there was no apparent pattern in the plot of errors and the scatter plot between errors and fitted value, which showed that errors had constant variance. So, the normality assumption and the constant variance assumption for errors were also satisfied. And, since the error term was independent of the other terms in the model, the assumption that random effect and errors were independent was satisfied. Moreover, Figure illustrated that there was no apparent pattern in the scatter plot between marginal residuals and fitted values, which showed that the linearity of the model was appropriate. Also, Table showed that the variance-covariance matrix for T_assignment was appropriate. Thus, all assumptions of the model were satisfied and the linear mixed model was appropriate here.   
+Then, I checked the graphs for random effect and errors to see whether the model assumptions were satisfied, I found that all 4 fitted models had similar patterns. (I included the figures for model assumptions in the Appendix.) Figure \@ref(fig:plot7), Figure \@ref(fig:plot10), Figure \@ref(fig:plot13) and Figure \@ref(fig:plot16) depicted that for each model, the random effect was roughly normally distributed and most points in the QQ plot were on/near the QQ line, so the random effect followed the normal distribution. Also, there was no apparent pattern in the scatter plot between random effect and fitted value, which indicated that the random effect had constant variance. So, the normality assumption and the constant variance assumption for random effect were satisfied. Similarly, Figure \@ref(fig:plot8), Figure \@ref(fig:plot11), Figure \@ref(fig:plot14) and Figure \@ref(fig:plot17) showed that errors was roughly normally distributed and most points in the QQ plot were on/near the QQ line, so that errors followed the normal distribution. Also, there was no apparent pattern in the plot of errors and the scatter plot between errors and fitted value, which showed that errors had constant variance. So, the normality assumption and the constant variance assumption for errors were also satisfied. And, since the error term was independent of the other terms in the model, the assumption that random effect and errors were independent was satisfied. Moreover, Figure \@ref(fig:plot8), Figure \@ref(fig:plot12), Figure \@ref(fig:plot15) and Figure \@ref(fig:plot18) illustrated that there was no apparent pattern in the scatter plot between marginal residuals and fitted values, which showed that the linearity of the model was appropriate. Also, Table \@ref(tab:table11), Table \@ref(tab:table12), Table \@ref(tab:table13) and Table \@ref(tab:table14) showed that the variance-covariance matrix for T_assignment was appropriate. Thus, all assumptions of the model were satisfied and the linear mixed model was appropriate here.   
  
 # Discussion:
 
 **6.1 Interpretation of Results & Key Findings:**
 
-For each fitted model, the estimated coefficient for T_assignment was positive and the p-value was very small (i.e. much smaller than 0.05), which indicated that the intervention significantly affected the post-test score in a positive direction. Also, the estimated marginal mean for treatment group was higher than that for control group, which showed that the students receiving DLL training tended to achieve higher posttest score on average than those receiving the regular education. Thus, I could conclude that DLL program improved the Spanish literacy skills of the first-grade Spanish-speaking students who had weak literacy skills, and this program was effective. 
+For each fitted model except the model for Language, the estimated coefficient for T_assignment was positive and the p-value was very small (i.e. much smaller than 0.05), which indicated that the intervention significantly affected the post-test score in a positive direction. Also, the estimated marginal mean for treatment group was higher than that for control group, which showed that the students receiving DLL training tended to achieve higher posttest score on average than those receiving the regular education. For the model for Language, although the p-value was slightly larger than 0.05, its estimate for T_assignment was positive and the estimated marginal means for treatment group was much larger than that for control group, so the result could also reveal that DLL postively affected the posttest scores. Thus, I could conclude that DLL program improved the Spanish literacy skills of the first-grade Spanish-speaking students who had weak literacy skills, and this program was effective. 
 
 This paper could conclude a causal relationship between posttest score and DLL training, because a Randomized Controlled Trial (RCT) was conducted and it ensured the random allocation of treatment and separation of control group and treatment group. All the other factors were controlled to be constant (or at least similar) between groups (based on the given information), so that groups only differed in the intervention. I could then compare each subtest’s posttest score between groups, and  any differences existed were caused by the intervention. I could also fitted the model with a binary variable representing the groups and compare the predicted values for groups, and if the effect of intervention on the outcome was statistically significant and positive, then DLL program was proven to improve the Spanish literacy skills of the enrolled students.
 
-Furthermore, because I used a different data cleaning method and I did not standardize the pretest and posttest scores before fitting the models, my model results were different from those in the original paper regarding the Logramos measure. But I draw the same conclusion that DLL was effective in improving these students’ Spanish literacy skills.
+Furthermore, because I used a different data cleaning method and I did not standardize the pretest and posttest scores before fitting the models, my model results were different from those in the original paper [@citepaper] regarding the Logramos measure. But I draw the same conclusion that DLL was effective in improving these students’ Spanish literacy skills.
 
 **6.2 Paper Overview & Literature Review:**
 
-This paper was to estimate the effect of DLL, which was a one-one-one literacy program designed for the Spanish-speaking students that had poor literacy skills, on the Spanish literacy skills of these students that was measured by the scores of logramos. I got the data from OPENICPSR (cite), and the data was collected using a Randomized Controlled Trial (RCT) conducted in 2016-2017 school year in the U.S.. I referred to the original paper (cite) for DLL introduction and data collection process. The intervention of this RCT was the DLL program, which generated a control group where students receiving the regular education during Fall semester, and a treatment group where the students receiving the DLL training. The population was all early elementary Spanish-speaking students that had weak literacy skills in the U.S., and the sample was 152 qualified first-grade Spanish-speaking students whose IdO was within the lowest 25% of their schools among the qualified 22 schools in Texas, Illinois and Arizona. 
+This paper was to estimate the effect of DLL, which was a one-one-one literacy program designed for the Spanish-speaking students that had poor literacy skills, on the Spanish literacy skills of these students that was measured by the scores of logramos. I got the data from OPENICPSR [@citedata], and the data was collected using a Randomized Controlled Trial (RCT) conducted in 2016-2017 school year in the U.S.. I referred to the original paper [@citepaper] for DLL introduction and data collection process. The intervention of this RCT was the DLL program, which generated a control group where students receiving the regular education during Fall semester, and a treatment group where the students receiving the DLL training. The population was all early elementary Spanish-speaking students that had weak literacy skills in the U.S., and the sample was 152 qualified first-grade Spanish-speaking students whose IdO was within the lowest 25% of their schools among the qualified 22 schools in Texas, Illinois and Arizona. 
 
 This sample was not randomly sampled from the frame, and the non-random sampling process led to the selection bias and reduced the representativeness of sample. However, the random allocation of treatment was ensured in the RCT and avoided the self-selection bias. Then, for each subtest’s score and the overall score, I visualized the differences in pretest score between groups and found that these groups shared similar pretest overall score, so that I could assume that this observable characteristic was similar between groups. But I still included each pre-test score as the fixed effect in its corresponding model to adjust for these slight differences and improve the accuracy of predictions. Besides, the non-random sampling method and relatively small sample size could not ensure the similarities of observable and unobservable characteristics between groups, and they lowered the internal validity of this RCT. 
 
@@ -609,15 +656,15 @@ There were 12 variables and 152 rows in the data. I used the binary variable T_a
 
 Then, I fitted a linear mixed model for each subtest (including the overall score), and the response variable was the posttest score. Since many students were sampled from the same school and there may be correlations within a school, I included the variable School_Id in the model as the random effect to adjust for these school differences. I also included the pretest score and random assignment (i.e. T_assignment) as the fixed effects in the model to explore whether the intervention (i.e. DLL program) affected the Spanish literacy skills. For each fitted model, I interpreted the estimates and p-values, and I found that for each subtest, DLL program positively affected the Spanish literacy skills and the students receiving DLL training achieved higher posttest scores on average. Therefore, DLL program could improve the Spanish literacy skills of enrolled students.
 
-Since DLL program was like the Spanish-version of Reading Recovery program, I looked at a paper about the impacts of Reading Recovery program that helped to advance the (English) literacy skills of first-grade schoolers who had low literacy scores (cite). It performed a randomized controlled trial to show that the students receiving Reading Recovery services had higher scores of ITBS than others, so the Reading Recovery program advanced the English literacy skills of struggling students, and particularly, the students with poorer literacy skills benefited more. This study also used the RCT, which was the same as my paper, to be able to conclude that the literacy program caused the literacy test scores of participated students to increase.
+Since DLL program was like the Spanish-version of Reading Recovery program, I looked at a paper about the impacts of Reading Recovery program that helped to advance the (English) literacy skills of first-grade schoolers who had low literacy scores [@citeliterature1]. It performed a randomized controlled trial to show that the students receiving Reading Recovery services had higher scores of ITBS than others, so the Reading Recovery program advanced the English literacy skills of struggling students, and particularly, the students with poorer literacy skills benefited more. This study also used the RCT, which was the same as my paper, to be able to conclude that the literacy program caused the literacy test scores of participated students to increase.
 
-A study explored the effect of Reading Recovery program and DLL program on literacy skills of the first-grade English Language Learners (ELL) and the first-grade Spanish-speaking students that performed bad in literacy respectively, from the collected data in 1993-1996 in California (cite). It found that both the ELL and DLL students had higher average posttest scores of the selected literacy measures, so the Reading Recovery program and the DLL program positively affected the literacy skills of the ELL and the DLL students respectively. This study and my paper together revealed that the early literacy interventions could benefit the target students regarding their English or Spanish literacy skills. 
+A study explored the effect of Reading Recovery program and DLL program on literacy skills of the first-grade English Language Learners (ELL) and the first-grade Spanish-speaking students that performed bad in literacy respectively, from the collected data in 1993-1996 in California [@citeliterature2] It found that both the ELL and DLL students had higher average posttest scores of the selected literacy measures, so the Reading Recovery program and the DLL program positively affected the literacy skills of the ELL and the DLL students respectively. This study and my paper together revealed that the early literacy interventions could benefit the target students regarding their English or Spanish literacy skills. 
 
-While my paper showed that DLL program improved the Spanish literacy skills of first-grade Spanish-speaking students in the short-term (i.e. immediately after they completed the program), there was another study exploring the long-term effect of DLL (cite). It compared the academic performance of second and third graders that had participated in DLL in the first grade and those that were randomly sampled from the classrooms, and it found that these DLL students performed equally well or even better than the sample students in reading and writing. So, DLL exerted long-term positive effect on the literacy skills of participated students. However, since this study did not use the RCT to control all other factors invariant except that some students had enrolled in DLL before, it could only conclude that DLL positively affected the literacy skills in the long-term, instead of concluding the causal relationship between them. 
+While my paper showed that DLL program improved the Spanish literacy skills of first-grade Spanish-speaking students in the short-term (i.e. immediately after they completed the program), there was another study exploring the long-term effect of DLL [@citeliterature3]. It compared the academic performance of second and third graders that had participated in DLL in the first grade and those that were randomly sampled from the classrooms, and it found that these DLL students performed equally well or even better than the sample students in reading and writing. So, DLL exerted long-term positive effect on the literacy skills of participated students. However, since this study did not use the RCT to control all other factors invariant except that some students had enrolled in DLL before, it could only conclude that DLL positively affected the literacy skills in the long-term, instead of concluding the causal relationship between them. 
 
 **6.3 Limitations:**  
 
-There were 3 main limitations with respect to the sampling method (and the sample size), experiment design, choice of response variable and ethical issues. Firstly, as discussed in the Data section, this RCT did not use a random sampling method, so that the sample units were not randomly sampled from the frame. Also, the sample size was small, so the selection bias may exist and the generalization of analysis results could be reduced. Accordingly, although this RCT used the random allocation of treatment, I could not ensure that all the other factors were the same and the internal validity were appropriate, which may further restrict the appropriateness of causal relationship. Secondly, since the students receiving DLL training obviously know that they were treated, this RCT could not be designed as a single-blind study to remove the bias due to the different attitudes of participants (cite). So, the students in treatment group may work hard and try to perform well in the posttest, which may cause the over-estimate of effect. Thirdly, I used the test score of Logramos to measure the Spanish literacy skills of students, because this was also a standard and important measure for literacy skills. However, since the IdO test was the most systematic assessment for DLL (cite), using it as the response variable may have advantages over Logramos. And using it along with the Logramos to measure the literacy skills may be more appropriate to conclude that DLL could improve the Spanish literacy skills. Finally, although this RCT allowed all participated students to have the opportunity to receive the treatment, the students in control group received DLL training in the second semester, which was 1 semester later than the students in treatment group. Since the Reading Recovery program is very important for students at their early elementary stage, the earlier they receive the effective training, the more benefits for their long-term academic development. So, this RCT may make them fall behind the peers and may have negative effect on their long-term academic performance. 
+There were 3 main limitations with respect to the sampling method (and the sample size), experiment design, choice of response variable and ethical issues. Firstly, as discussed in the Data section, this RCT did not use a random sampling method, so that the sample units were not randomly sampled from the frame. Also, the sample size was small, so the selection bias may exist and the generalization of analysis results could be reduced. Accordingly, although this RCT used the random allocation of treatment, I could not ensure that all the other factors were the same and the internal validity were appropriate, which may further restrict the appropriateness of causal relationship. Secondly, since the students receiving DLL training obviously know that they were treated, this RCT could not be designed as a single-blind study to remove the bias due to the different attitudes of participants [@citeliterature4]. So, the students in treatment group may work hard and try to perform well in the posttest, which may cause the over-estimate of effect. Thirdly, I used the test score of Logramos to measure the Spanish literacy skills of students, because this was also a standard and important measure for literacy skills. However, since the IdO test was the most systematic assessment for DLL [@citepaper], using it as the response variable may have advantages over Logramos. And using it along with the Logramos to measure the literacy skills may be more appropriate to conclude that DLL could improve the Spanish literacy skills. Finally, although this RCT allowed all participated students to have the opportunity to receive the treatment, the students in control group received DLL training in the second semester, which was 1 semester later than the students in treatment group. Since the Reading Recovery program is very important for students at their early elementary stage, the earlier they receive the effective training, the more benefits for their long-term academic development. So, this RCT may make them fall behind the peers and may have negative effect on their long-term academic performance. 
 
 **6.4 Future Directions:**  
 
@@ -625,166 +672,162 @@ Based on the limitations, I proposed some suggestions. Firstly, besides the rand
 
 
 \newpage
+
 # Appendix
 
-** Assumptions for Reading Model:**  
-```{r}
+**7.1 Assumptions for Reading Model:**  
+
+```{r plot7, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Reading model', fig.width = 10, fig.height = 6}
 # random effect
 random_effect1 <- lme4::ranef(reading_model)[[1]]
 # errors 
 error1 <- residuals(reading_model)
 
 # for random effect
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 3))
 # histogram 
-hist(random_effect1, xlab = 'Random effect', title = 'Histogram of random effect')
+hist(random_effect1, xlab = 'Random effect', main = 'Histogram of random effect')
 # qq plot
-qqnorm(random_effect1, title = 'QQ plot of random effect')
+qqnorm(random_effect1, main = 'QQ plot of random effect')
 qqline(random_effect1)
 # plot the random effect
-plot(random_effect1, title = 'Scatter plot of random effect vs index')
-abline(0, 0)
-# scatter plot of random effect and fitted value
-plot(fit1, random_effect1, title = 'Scatter plot of fitted value vs random effect')
+plot(random_effect1, main = 'Scatter plot of random effect vs index')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot8, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for errors in the Reading model', fig.width = 10, fig.height = 6}
 # for errors: conditional residuals
 par(mfrow = c(2, 2))
 # histogram 
-hist(error1, title = 'Histogram of errors')
+hist(error1, main = 'Histogram of errors')
 # qq plot
-qqnorm(error1, title = 'QQ plot of errors')
+qqnorm(error1, main = 'QQ plot of errors')
 qqline(error1)
 # plot errors
-plot(error1, title = 'Scatter plot of errors vs index')
+plot(error1, main = 'Scatter plot of errors vs index')
 abline(0, 0)
 # scatter plot of fitted value and errors
-plot(fit1, error1, title = 'Scatter plot of fitted value vs errors')
+plot(fit1, error1, main = 'Scatter plot of fitted value vs errors')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot9, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for marginal residuals in the Reading model', fig.width = 4, fig.height = 4}
 # marginal residual
 marginal_res1 <- resid(reading_model, level = 0)
 # qq plot
-qqnorm(marginal_res1, title = 'QQ plot of marginal residuals')
+qqnorm(marginal_res1, main = 'QQ plot of marginal residuals')
 qqline(marginal_res1)
 ```
 
-```{r}
+```{r table11, echo = FALSE, message = FALSE, warning = FALSE}
 # variance-covariance
-var(cbind(clean_data_reading$Posttest_READING[clean_data_reading$T_assignment == '0'], 
-          clean_data_reading$Posttest_READING[clean_data_reading$T_assignment == '1']))
+knitr::kable(var(cbind(clean_data_reading$Posttest_READING[clean_data_reading$T_assignment == '0'], 
+          clean_data_reading$Posttest_READING[clean_data_reading$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
-** Assumptions for Language Model:**  
-```{r}
+**7.2 Assumptions for Language Model:**  
+
+```{r plot10, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Language model', fig.width = 8, fig.height = 6}
 # random effect
 random_effect2 <- lme4::ranef(language_model)[[1]]
 # errors 
 error2 <- residuals(language_model)
 
 # for random effect
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 3))
 # histogram 
-hist(random_effec21, xlab = 'Random effect', title = 'Histogram of random effect')
+hist(random_effect2, xlab = 'Random effect', main = 'Histogram of random effect')
 # qq plot
-qqnorm(random_effect2, title = 'QQ plot of random effect')
+qqnorm(random_effect2, main = 'QQ plot of random effect')
 qqline(random_effect2)
 # plot the random effect
-plot(random_effect2, title = 'Scatter plot of random effect vs index')
-abline(0, 0)
-# scatter plot of random effect and fitted value
-plot(fit2, random_effect2, title = 'Scatter plot of fitted value vs random effect')
+plot(random_effect2, main = 'Scatter plot of random effect vs index')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot11, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for errors in the Language model', fig.width = 10, fig.height = 6}
 # for errors: conditional residuals
 par(mfrow = c(2, 2))
 # histogram 
-hist(error2, title = 'Histogram of errors')
+hist(error2, main = 'Histogram of errors')
 # qq plot
-qqnorm(error2, title = 'QQ plot of errors')
+qqnorm(error2, main = 'QQ plot of errors')
 qqline(error2)
 # plot errors
-plot(error2, title = 'Scatter plot of errors vs index')
+plot(error2, main = 'Scatter plot of errors vs index')
 abline(0, 0)
 # scatter plot of fitted value and errors
-plot(fit2, error2, title = 'Scatter plot of fitted value vs errors')
+plot(fit2, error2, main = 'Scatter plot of fitted value vs errors')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot12, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for marginal residuals in the Language model', fig.width = 4, fig.height = 4}
 # marginal residual
 marginal_res2 <- resid(language_model, level = 0)
 # qq plot
-qqnorm(marginal_res2, title = 'QQ plot of marginal residuals')
+qqnorm(marginal_res2, main = 'QQ plot of marginal residuals')
 qqline(marginal_res2)
 ```
 
-```{r}
+```{r table12, echo = FALSE, message = FALSE, warning = FALSE}
 # variance-covariance
-var(cbind(clean_data_language$Posttest_LANGUAGE[clean_data_language$T_assignment == '0'], 
-          clean_data_language$Posttest_LANGUAGE[clean_data_language$T_assignment == '1']))
+knitr::kable(var(cbind(clean_data_language$Posttest_LANGUAGE[clean_data_language$T_assignment == '0'], 
+          clean_data_language$Posttest_LANGUAGE[clean_data_language$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
-**Assumptions for Vocabulary Model:**  
-```{r}
+**7.3 Assumptions for Vocabulary Model:**  
+
+```{r plot13, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Vocabulary model', fig.width = 10, fig.height = 6}
 # random effect
 random_effect3 <- lme4::ranef(vocabulary_model)[[1]]
 # errors 
 error3 <- residuals(vocabulary_model)
 
 # for random effect
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 3))
 # histogram 
-hist(random_effect3, xlab = 'Random effect', title = 'Histogram of random effect')
+hist(random_effect3, xlab = 'Random effect', main = 'Histogram of random effect')
 # qq plot
-qqnorm(random_effect3, title = 'QQ plot of random effect')
+qqnorm(random_effect3, main = 'QQ plot of random effect')
 qqline(random_effect3)
 # plot the random effect
-plot(random_effect3, title = 'Scatter plot of random effect vs index')
-abline(0, 0)
-# scatter plot of random effect and fitted value
-plot(fit3, random_effect3, title = 'Scatter plot of fitted value vs random effect')
+plot(random_effect3, main = 'Scatter plot of random effect vs index')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot14, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for errors in the Vocabulary model', fig.width = 10, fig.height = 6}
 # for errors: conditional residuals
 par(mfrow = c(2, 2))
 # histogram 
-hist(error3, title = 'Histogram of errors')
+hist(error3, main = 'Histogram of errors')
 # qq plot
-qqnorm(error3, title = 'QQ plot of errors')
+qqnorm(error3, main = 'QQ plot of errors')
 qqline(error3)
 # plot errors
-plot(error3, title = 'Scatter plot of errors vs index')
+plot(error3, main = 'Scatter plot of errors vs index')
 abline(0, 0)
 # scatter plot of fitted value and errors
-plot(fit3, error3, title = 'Scatter plot of fitted value vs errors')
+plot(fit3, error3, main = 'Scatter plot of fitted value vs errors')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot15, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for marginal residuals in the Vocabulary model', fig.width = 4, fig.height = 4}
 # marginal residual
 marginal_res3 <- resid(vocabulary_model, level = 0)
 # qq plot
-qqnorm(marginal_res3, title = 'QQ plot of marginal residuals')
+qqnorm(marginal_res3, main = 'QQ plot of marginal residuals')
 qqline(marginal_res3)
 ```
 
-```{r}
+```{r table13, echo = FALSE, message = FALSE, warning = FALSE}
 # variance-covariance
-var(cbind(clean_data_vocabulary$Posttest_VOCABULARY[clean_data_vocabulary$T_assignment == '0'], 
-          clean_data_vocabulary$Posttest_VOCABULARY[clean_data_vocabulary$T_assignment == '1']))
+knitr::kable(var(cbind(clean_data_vocabulary$Posttest_VOCABULARY[clean_data_vocabulary$T_assignment == '0'], 
+          clean_data_vocabulary$Posttest_VOCABULARY[clean_data_vocabulary$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
-**Assumptions for Overall Score Model:**  
-```{r}
+**7.4 Assumptions for Overall Score Model:**  
+
+```{r plot16, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for random effect in the Overall Score model', fig.width = 10, fig.height = 6}
 # check assumptions
 # random effect
 random_effect4 <- lme4::ranef(overall_model)[[1]]
@@ -792,48 +835,45 @@ random_effect4 <- lme4::ranef(overall_model)[[1]]
 error4 <- residuals(overall_model)
 
 # for random effect
-par(mfrow = c(2, 2))
+par(mfrow = c(1, 3))
 # histogram 
-hist(random_effect4, xlab = 'Random effect', title = 'Histogram of random effect')
+hist(random_effect4, xlab = 'Random effect', main = 'Histogram of random effect')
 # qq plot
-qqnorm(random_effect4, title = 'QQ plot of random effect')
+qqnorm(random_effect4, main = 'QQ plot of random effect')
 qqline(random_effect4)
 # plot the random effect
-plot(random_effect4, title = 'Scatter plot of random effect vs index')
-abline(0, 0)
-# scatter plot of random effect and fitted value
-plot(fit4, random_effect4, title = 'Scatter plot of fitted value vs random effect')
+plot(random_effect4, main = 'Scatter plot of random effect vs index')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot17, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for errors in the Overall Score model', fig.width = 6, fig.height = 6}
 # for errors: conditional residuals
 par(mfrow = c(2, 2))
 # histogram 
-hist(error4, title = 'Histogram of errors')
+hist(error4, main = 'Histogram of errors')
 # qq plot
-qqnorm(error4, title = 'QQ plot of errors')
+qqnorm(error4, main = 'QQ plot of errors')
 qqline(error4)
 # plot errors
-plot(error4, title = 'Scatter plot of errors vs index')
+plot(error4, main = 'Scatter plot of errors vs index')
 abline(0, 0)
 # scatter plot of fitted value and errors
-plot(fit4, error4, title = 'Scatter plot of fitted value vs errors')
+plot(fit4, error4, main = 'Scatter plot of fitted value vs errors')
 abline(0, 0)
 ```
 
-```{r}
+```{r plot18, echo = FALSE, message = FALSE, warning = FALSE, fig.cap ='The graphs of checking assumptions for marginal residuals in the Overall Score model', fig.width = 4, fig.height = 4}
 # marginal residual
 marginal_res4 <- resid(overall_model, level = 0)
 # qq plot
-qqnorm(marginal_res4, title = 'QQ plot of marginal residuals')
+qqnorm(marginal_res4, main = 'QQ plot of marginal residuals')
 qqline(marginal_res4)
 ```
 
-```{r}
+```{r table14, echo = FALSE, message = FALSE, warning = FALSE}
 # variance-covariance
-var(cbind(clean_data_overall$Posttest_ELA.TOTAL[clean_data_overall$T_assignment == '0'], 
-          clean_data_overall$Posttest_ELA.TOTAL[clean_data_overall$T_assignment == '1']))
+knitr::kable(var(cbind(clean_data_overall$Posttest_ELA.TOTAL[clean_data_overall$T_assignment == '0'], 
+          clean_data_overall$Posttest_ELA.TOTAL[clean_data_overall$T_assignment == '1'])), caption = 'The table of variance-covariance martix for 2 groups')
 ```
 
 
